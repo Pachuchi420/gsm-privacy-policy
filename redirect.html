@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Complete</title>
+  <script>
+    window.onload = () => {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+
+      // Send tokens to the Java app
+      fetch('http://localhost:3001/receive-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_token: accessToken,
+          refresh_token: refreshToken
+        })
+      }).then(() => {
+        document.getElementById("status").textContent = "✅ Login successful! You can now close this tab.";
+      }).catch((err) => {
+        console.error(err);
+        document.getElementById("status").textContent = "❌ Login failed. Please try again.";
+      });
+    };
+  </script>
+</head>
+<body>
+  <h1 id="status">Processing login...</h1>
+</body>
+</html>
