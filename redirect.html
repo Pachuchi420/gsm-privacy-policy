@@ -11,18 +11,24 @@
 
       // Send tokens to the Java app
       fetch('http://localhost:3001/receive-token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_token: accessToken,
-          refresh_token: refreshToken
-        })
-      }).then(() => {
-        document.getElementById("status").textContent = "✅ Login successful! You can now close this tab.";
-      }).catch((err) => {
-        console.error(err);
-        document.getElementById("status").textContent = "❌ Login failed. Please try again.";
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    access_token: accessToken,
+    refresh_token: refreshToken
+  })
+}).then(res => {
+  if (res.ok) {
+    document.getElementById("status").textContent = "✅ Login successful! You can now close this tab.";
+  } else {
+    document.getElementById("status").textContent = "❌ Login failed. Please try again.";
+  }
+}).catch((err) => {
+  console.error(err);
+  document.getElementById("status").textContent = "❌ Login failed. Please try again.";
+});
+    
+    
     };
   </script>
 </head>
